@@ -53,6 +53,15 @@ VectorToDF <- function(vec, ind){
   
 }
 
+# Function to select elements from list
+SelectListItem <- function(lst, elnt = 1, lkp) {
+  
+  itemVec <- sapply(lst, function(x) x[[elnt]][[1]])
+  myList <- lst[which(itemVec == lkp)]
+  
+  return(myList)
+}
+
 # Create list of separate vectors
 txtList <- VectorToList(txtData, "New") 
 
@@ -67,3 +76,5 @@ for (m in 1:length(txtList)) {
 }
 
 head(newList, n=3)
+
+SelectListItem(newList, 2, "WOUND")
