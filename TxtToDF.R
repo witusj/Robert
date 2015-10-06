@@ -61,6 +61,7 @@ newList <- NULL
 for (m in 1:length(txtList)) {
   
   testresDf <- VectorToDF(txtList[m], "Data")
+  colnames(testresDf) <- c("Antibiotics", "S", "R", "I")
   newList[[m]] <- list(bacteria = txtList[[m]][1], source = txtList[[m]][2], result = testresDf)
   
 }
