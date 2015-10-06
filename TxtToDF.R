@@ -56,8 +56,8 @@ VectorToDF <- function(vec, ind){
 # Function to select elements from list
 SelectListItem <- function(lst, elnt = 1, lkp) {
   
-  itemVec <- sapply(lst, function(x) x[[elnt]][[1]])
-  myList <- lst[which(itemVec == lkp)]
+  itemVec <- sapply(lst, function(x) x[[elnt]][[1]]) # Create vector with all items from selected list element
+  myList <- lst[which(itemVec == lkp)] # Use which function on vector to create vector of indexnumbers and select items from original list
   
   return(myList)
 }
