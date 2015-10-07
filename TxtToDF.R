@@ -77,4 +77,4 @@ for (m in 1:length(txtList)) {
 
 head(newList, n=3)
 
-SelectListItem(newList, 2, "WOUND")
+SelectListItem(newList, 1, "Escherichia coli")
