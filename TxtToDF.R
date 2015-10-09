@@ -1,13 +1,10 @@
-
 # Read text file (file should be in the same working directory as this script)
 con <- file("antibiogram_raw.txt")
 txtData <- readLines(con, warn = FALSE, skipNul = TRUE)
 close(con)
 
-# Reduce multiple tabs to semicolon
-txtData <- gsub("\t{1,}", ";", txtData)
-
 # Clean up
+txtData <- gsub("\t{1,}", ";", txtData)
 txtData <- gsub("^Page", NA, txtData)
 txtData <- gsub("Site:", "", txtData)
 txtData <- gsub("^;$", NA, txtData)
@@ -18,7 +15,6 @@ txtData <- gsub("S;R;I", "Data", txtData)
 txtData <- na.omit(txtData)
 
 # Function to split vector into list
-
 VectorToList <- function(vec, ind) {
   
 n = 1
@@ -75,6 +71,23 @@ for (m in 1:length(txtList)) {
   
 }
 
-head(newList, n=3)
+# Create data frame from list
+newDF <- NULL
+for (s in 1:length(newList)) {
+  
+  cntRows <- length(newList[[s]]$result[,1])
+  bact <- rep_len(newList[[s]]$bacteria,cntRows)
+  srce <-  rep_len(newList[[s]]$source,cntRows)
+  tmpDF <- cbind(bacteria = bact, source = srce, newList[[s]]$result)
+  newDF <- rbind(newDF, tmpDF)
+  
+}
 
-SelectListItem(newList, 1, "Escherichia coli")
+# Summarise by selected grouping
+library(dplyr)
+by_bacteria <- group_by(newDF, bacteria)
+resistDF <- summarise(by_bacteria,
+          mean_S = mean(as.numeric(S)),
+          mean_R = mean(as.numeric(R)),
+          mean_I = mean(as.numeric(I))
+          )
