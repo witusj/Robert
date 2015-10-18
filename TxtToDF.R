@@ -78,16 +78,18 @@ for (s in 1:length(newList)) {
   cntRows <- length(newList[[s]]$result[,1])
   bact <- rep_len(newList[[s]]$bacteria,cntRows)
   srce <-  rep_len(newList[[s]]$source,cntRows)
-  tmpDF <- cbind(bacteria = bact, source = srce, newList[[s]]$result)
+  tmpDF <- cbind(Bacteria = bact, Source = srce, newList[[s]]$result)
   newDF <- rbind(newDF, tmpDF)
   
 }
 
 # Summarise by selected grouping
 library(dplyr)
-by_bacteria <- group_by(newDF, bacteria)
+by_bacteria <- group_by(newDF, Bacteria, Antibiotics)
 resistDF <- summarise(by_bacteria,
           mean_S = mean(as.numeric(S)),
           mean_R = mean(as.numeric(R)),
           mean_I = mean(as.numeric(I))
           )
+# Write list of bacteria to csv
+write.csv(unique(by_bacteria$Bacteria), "Bacteria_list.csv")
